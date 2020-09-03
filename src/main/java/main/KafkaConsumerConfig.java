@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@EnableKafka
+@EnableKafka  //this is required only for consumers
 public class KafkaConsumerConfig {
     @Value("${kafka.bootstrap.servers}")
     private String bootstrapAddress;
