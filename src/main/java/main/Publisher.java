@@ -14,8 +14,8 @@ public class Publisher {
     @Autowired
     private KafkaTemplate<String, Employee> kafkaTemplate1;//note generics of kafka tempalte important
 
-   // @Value("${kafka.topic.name")
-    private String topicName="harshal";
+   @Value("${kafka.topic.name}")
+    private String topicName;
 
 
     //synchronous publishing (i.e waits for acknowledgement before pushing next message.
@@ -26,7 +26,14 @@ public class Publisher {
 
 
     public void sendMessage(Employee emp) {
+//synchronous publishing (i.e waits for succesfull acknowledgement from producer client before pushing next message)
+        try {
+            kafkaTemplate1.send(topicName, emp);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            kafkaTemplate1.send("harshal",emp);
+        }
 
-        kafkaTemplate1.send(topicName, emp);
     }
 }

@@ -2,6 +2,7 @@ package main;
 
 import main.modal.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,14 +19,14 @@ public class Main implements CommandLineRunner {
 
 
     //auto-configuration takes care of instantiating config objects
-    //overriding run method to call publisher.
+    //overriding SpringApplication.run() method to call publisher and listener on app start
     @Override
     public void run(String... args) throws Exception {
 
         //   publisher.sendMessage("my first kafka message"); //22 bytes (i.e UTF 8) 1 char=1 byte)
         Employee employee = new Employee();
         employee.setEmpId("100");
-        employee.setName("harshal");
+        employee.setName("amar");
         employee.setPhone("35262626");
         publisher.sendMessage(employee); //22 bytes (i.e UTF 8) 1 char=1 byte)a
 
@@ -35,7 +36,7 @@ public class Main implements CommandLineRunner {
 
     }
 
-    @KafkaListener(topics = "harshal", groupId = "test-consumer-group")
+    @KafkaListener(topics ="${kafka.topic.name}" , groupId = "${kafka.consumer.groupid}")
     public void listenGroupFoo(String message) {
         System.out.println("Received Message in group foo: " + message);
     }
